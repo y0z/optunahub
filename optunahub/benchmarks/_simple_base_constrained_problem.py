@@ -6,8 +6,8 @@ from typing import Sequence
 
 import optuna
 
-from optunahub.benchmarks import BaseConstrainedProblem
-from optunahub.benchmarks import SimpleBaseProblem
+from optunahub.benchmarks._base_constrained_problem import BaseConstrainedProblem
+from optunahub.benchmarks._simple_base_problem import SimpleBaseProblem
 
 
 class SimpleBaseConstrainedProblem(BaseConstrainedProblem, SimpleBaseProblem):

@@ -6,7 +6,7 @@ from typing import Sequence
 
 import optuna
 
-from optunahub.benchmarks import BaseProblem
+from optunahub.benchmarks._base_problem import BaseProblem
 
 
 class SimpleBaseProblem(BaseProblem):
