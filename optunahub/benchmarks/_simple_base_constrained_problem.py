@@ -6,11 +6,11 @@ from typing import Sequence
 
 import optuna
 
-from optunahub.benchmarks import ConstrainedBaseProblem
+from optunahub.benchmarks import BaseConstrainedProblem
 from optunahub.benchmarks import SimpleBaseProblem
 
 
-class SimpleConstrainedBaseProblem(ConstrainedBaseProblem, SimpleBaseProblem):
+class SimpleBaseConstrainedProblem(BaseConstrainedProblem, SimpleBaseProblem):
     def constraints_func(self, trial: optuna.trial.FrozenTrial) -> Sequence[float]:
         """Evaluate the constraint functions.
         Args:

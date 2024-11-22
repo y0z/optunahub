@@ -8,7 +8,7 @@ import optuna
 from optunahub.benchmarks import BaseProblem
 
 
-class ConstrainedBaseProblem(BaseProblem):
+class BaseConstrainedProblem(BaseProblem):
     @abstractmethod
     def constraints_func(self, trial: optuna.trial.FrozenTrial) -> Sequence[float]:
         """Evaluate the constraint functions.
