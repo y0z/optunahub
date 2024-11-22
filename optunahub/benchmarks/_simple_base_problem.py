@@ -23,15 +23,6 @@ class SimpleBaseProblem(BaseProblem):
             trial._check_distribution(name, dist)
         return self.evaluate(params)
 
-    def constraints_func(self, trial: optuna.trial.FrozenTrial) -> Sequence[float]:
-        """Evaluate the constraint functions.
-        Args:
-            trial: Optuna trial object.
-        Returns:
-            The constraint values.
-        """
-        return self.evaluate_constraints(trial.params)
-
     @property
     @abstractmethod
     def search_space(self) -> dict[str, optuna.distributions.BaseDistribution]:
@@ -47,12 +38,3 @@ class SimpleBaseProblem(BaseProblem):
             The objective value.
         """
         ...
-
-    def evaluate_constraints(self, params: dict[str, Any]) -> Sequence[float]:
-        """Evaluate the constraint functions.
-        Args:
-            params: Input vector.
-        Returns:
-            The constraint values.
-        """
-        raise NotImplementedError

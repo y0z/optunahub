@@ -18,16 +18,6 @@ class BaseProblem(metaclass=ABCMeta):
         """
         ...
 
-    @abstractmethod
-    def constraints_func(self, trial: optuna.trial.FrozenTrial) -> Sequence[float]:
-        """Evaluate the constraint functions.
-        Args:
-            trial: Optuna trial object.
-        Returns:
-            The constraint values.
-        """
-        ...
-
     @property
     def direction(self) -> optuna.study.StudyDirection:
         """Return the optimization direction."""
