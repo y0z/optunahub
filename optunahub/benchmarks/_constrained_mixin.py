@@ -13,7 +13,6 @@ class ConstrainedMixIn:
         Returns:
             The constraint values.
         """
-        ...
         return self.evaluate_constraints(trial.params)
 
     @abstractmethod
