@@ -5,6 +5,13 @@ import optuna
 
 
 class ConstrainedMixIn:
+    """Mixin class for constrained optimization.
+    This class provides the constraint functions.
+
+    You need to reimplement one of the `constraints` or `evaluate_constraints` methods
+    in the derived class since the default implementations have a mutual recursion.
+    """
+
     def constraints_func(self, trial: optuna.trial.FrozenTrial) -> Sequence[float]:
         """Evaluate the constraint functions.
         Args:
