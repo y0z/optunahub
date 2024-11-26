@@ -36,7 +36,7 @@ class BaseProblem(metaclass=ABCMeta):
     def evaluate(self, params: dict[str, Any]) -> float | Sequence[float]:
         """Evaluate the objective function.
         Args:
-            params: Input vector.
+            params: Dictionary of input parameters.
         Returns:
             The objective value.
         """
