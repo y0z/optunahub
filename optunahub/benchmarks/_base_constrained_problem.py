@@ -21,7 +21,7 @@ class BaseConstrainedProblem(BaseProblem):
     def evaluate_constraints(self, params: dict[str, Any]) -> Sequence[float]:
         """Evaluate the constraint functions.
         Args:
-            params: Input vector.
+            params: Dictionary of input parameters.
         Returns:
             The constraint values.
         """
