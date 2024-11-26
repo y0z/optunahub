@@ -18,7 +18,7 @@ class BaseConstrainedProblem(BaseProblem):
         Returns:
             The constraint values.
         """
-        raise NotImplementedError
+        ...
 
     def evaluate_constraints(self, params: dict[str, Any]) -> Sequence[float]:
         """Evaluate the constraint functions.
