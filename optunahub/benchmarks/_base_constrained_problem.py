@@ -16,7 +16,7 @@ class BaseConstrainedProblem(BaseProblem):
         Returns:
             The constraint values.
         """
-        return self.evaluate_constraints(trial.prams)
+        return self.evaluate_constraints(trial.params)
 
     def evaluate_constraints(self, params: dict[str, Any]) -> Sequence[float]:
         """Evaluate the constraint functions.
