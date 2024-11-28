@@ -5,10 +5,8 @@ from typing import Sequence
 
 import optuna
 
-from ._base_problem import BaseProblem
 
-
-class BaseConstrainedProblem(BaseProblem):
+class ConstrainedMixIn:
     def constraints_func(self, trial: optuna.trial.FrozenTrial) -> Sequence[float]:
         """Evaluate the constraint functions.
         Args:
