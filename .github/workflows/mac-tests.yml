@@ -8,6 +8,10 @@ on:
       - main
   pull_request: {}
   workflow_dispatch: {}
+
+permissions:
+  contents: read
+
 jobs:
   tests:
     runs-on: macos-latest
