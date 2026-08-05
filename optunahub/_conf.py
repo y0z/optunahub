@@ -29,13 +29,3 @@ def cache_home() -> str:
             os.getenv("XDG_CACHE_HOME", os.path.join(os.path.expanduser("~"), ".cache")),
             "optunahub",
         )
-
-
-def is_no_analytics() -> bool:
-    """Return whether the analytics is disabled.
-
-    Returns:
-        `True` if the analytics is disabled, `False` if the analytics is enabled.
-    """
-
-    return os.getenv("OPTUNAHUB_NO_ANALYTICS", "0") == "1"
