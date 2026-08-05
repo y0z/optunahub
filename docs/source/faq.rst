@@ -4,19 +4,6 @@ FAQ
 .. contents::
     :local:
 
-How to opt-out of the anonymous analytics?
-------------------------------------------
-
-`OptunaHub collects anonymous usage data <https://hub.optuna.org/static/anonymous_analytics/>`__ to improve the service.
-The data is used to understand how users interact with the service and to identify areas for improvement.
-
-You can opt-out of the anonymous analytics by setting the environment variable ``OPTUNAHUB_NO_ANALYTICS`` to ``1``.
-
-.. code-block:: shell
-
-      export OPTUNAHUB_NO_ANALYTICS=1
-
-
 How to configure the package cache?
 -----------------------------------
 

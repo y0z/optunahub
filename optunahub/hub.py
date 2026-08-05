@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-from contextlib import suppress
 import importlib.util
-import json
 import os
 import re
 import shutil
@@ -10,79 +8,17 @@ import sys
 import tempfile
 import types
 from urllib.parse import urlparse
-from urllib.request import Request
-from urllib.request import urlopen
 
 from git import Repo
 from github import Auth
 from github import Github
 from github.ContentFile import ContentFile
-import optuna.version
 
-import optunahub
 from optunahub import _conf
 
 
 # Dummy optunahub_registry module is required to avoid ModuleNotFoundError.
 sys.modules["optunahub_registry"] = types.ModuleType("optunahub_registry")
-
-
-def _report_stats(
-    package: str,
-    ref: str | None,
-) -> None:
-    """Report anonymous statistics.
-
-    Collecting statistics for the official registry.
-    The following parameters are collected:
-      - CI: Whether the environment is CI or not.
-      - optuna_version: The version of Optuna.
-      - optunahub_version: The version of OptunaHub.
-      - package: The package name loaded.
-      - ref: The Git reference (branch, tag, or commit SHA) for the package.
-    WE NEVER COLLECT ANY PERSONAL INFORMATION.
-
-    The statistics can be disabled by setting the environmental variable OPTUNAHUB_NO_ANALYTICS=1,
-
-    Args:
-        package:
-            The package name loaded.
-        ref:
-            The Git reference (branch, tag, or commit SHA) for the package.
-    """
-    measurement_id = "G-8EZ4F4Z74E"
-    api_secret = "8tWYGaAEQJiYJSUJfqNMTw"
-    client_id = "optunahub"  # Anonymous (by always setting client_id to "optunahub")
-
-    url = f"https://www.google-analytics.com/mp/collect?measurement_id={measurement_id}&api_secret={api_secret}"
-    data = {
-        "client_id": client_id,
-        "events": [
-            {
-                "name": "load_module",
-                "params": {
-                    "CI": os.getenv("CI", False),
-                    "optuna_version": optuna.version.__version__,
-                    "optunahub_version": optunahub.__version__,
-                    "package": package,
-                    "ref": ref,
-                },
-            }
-        ],
-    }
-
-    jsondata = json.dumps(data)
-    json_data_as_bytes = jsondata.encode("utf-8")  # needs to be bytes
-
-    headers = {
-        "Content-Type": "application/json; charset=utf-8",
-        "Content-Length": str(len(json_data_as_bytes)),
-    }
-
-    req = Request(url, data=json_data_as_bytes, headers=headers)
-    with suppress(Exception):
-        with urlopen(req) as _:
-            pass
 
 
 def load_module(
@@ -160,11 +96,6 @@ def load_module(
         package=package,
         registry_root=local_registry_root,
     )
-
-    # Statistics are collected only for the official registry.
-    is_official_registry = repo_owner == "optuna" and repo_name == "optunahub-registry"
-    if not _conf.is_no_analytics() and not use_cache and is_official_registry:
-        _report_stats(package, ref)
 
     return module
 
