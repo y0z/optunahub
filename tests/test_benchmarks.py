@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import optuna
-from optuna.samplers._base import _CONSTRAINTS_KEY
 
 import optunahub
 
@@ -26,16 +25,15 @@ def test_base_problem() -> None:
     study.optimize(problem, n_trials=20)  # verify no error occurs
 
 
-def test_constrained_mixin() -> None:
-    class ConstrainedTestProblem(optunahub.benchmarks.ConstrainedMixin, TestProblem):
-        def evaluate_constraints(self, params: dict[str, float]) -> list[float]:
-            return [params["x"]]
+def test_constrained_problem() -> None:
+    class ConstrainedTestProblem(TestProblem):
+        def evaluate_constraints(self, params: dict[str, float]) -> dict[str, float]:
+            return {"c0": params["x"]}
 
     problem = ConstrainedTestProblem()
-    sampler = optuna.samplers.TPESampler(constraints_func=problem.constraints_func)
-    study = optuna.create_study(sampler=sampler, directions=problem.directions)
+    study = optuna.create_study(directions=problem.directions)
     study.optimize(problem, n_trials=20)  # verify no error occurs
 
     # Check if constraints are stored in trials
     for t in study.trials:
-        assert _CONSTRAINTS_KEY in study._storage.get_trial_system_attrs(t._trial_id)
+        assert t.constraints == {"c0": t.params["x"]}
