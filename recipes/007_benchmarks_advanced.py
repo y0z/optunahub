@@ -34,9 +34,15 @@ class DynamicProblem(BaseProblem):
         if x < 0:
             # Parameter `y` exists only when `x` is negative.
             y = trial.suggest_float("y", -5, 5)
-            return x**2 + y
+            value = x**2 + y
         else:
-            return x**2
+            value = x**2
+
+        # Call this after all the parameters are suggested so that ``trial.params`` is complete.
+        for key, constraint in self.evaluate_constraints(trial.params).items():
+            trial.set_constraint(key, constraint)
+
+        return value
 
     @property
     def directions(self) -> list[optuna.study.StudyDirection]:
@@ -70,14 +76,8 @@ study.optimize(dynamic_problem, n_trials=20)
 # -------------------------------------------------
 # Here, let's implement a problem with constraints.
 # To implement a problem with constraints, you need to implement the ``evaluate_constraints`` method, which evaluates the constraint functions given a dictionary of input parameters and returns a dictionary of constraint values.
-# The default ``__call__`` of ``BaseProblem`` sets them to the trial via ``optuna.trial.Trial.set_constraint``, but we have to do it by ourselves here since we override ``__call__``.
+# As ``DynamicProblem.__call__`` already sets the constraint values to the trial, we do not have to override ``__call__`` here.
 class ConstrainedProblem(DynamicProblem):
-    def __call__(self, trial: optuna.Trial) -> float:
-        value = super().__call__(trial)
-        for key, constraint in self.evaluate_constraints(trial.params).items():
-            trial.set_constraint(key, constraint)
-        return value
-
     def evaluate_constraints(self, params: dict[str, float]) -> dict[str, float]:
         x = params["x"]
         c0 = x - 2
