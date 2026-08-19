@@ -1,13 +1,11 @@
 from __future__ import annotations
 
-from collections.abc import Sequence
-from typing import Any
-
-import optuna
-
 
 class ConstrainedMixin:
     """Mixin class for constrained optimization problems.
+
+    .. warning::
+        Deprecated in v0.5.0. This feature will be removed in the future without prior notice.
 
     Example:
         You can define a constrained optimization problem by inheriting this class and implementing
@@ -56,23 +54,3 @@ class ConstrainedMixin:
             study = optuna.create_study(sampler=sampler, directions=problem.directions)
             study.optimize(problem, n_trials=20)
     """
-
-    def constraints_func(self, trial: optuna.trial.FrozenTrial) -> Sequence[float]:
-        """Evaluate the constraint functions.
-
-        Args:
-            trial: Optuna trial object.
-        Returns:
-            List of the constraint values.
-        """
-        return self.evaluate_constraints(trial.params.copy())
-
-    def evaluate_constraints(self, params: dict[str, Any]) -> Sequence[float]:
-        """Evaluate the constraint functions.
-
-        Args:
-            params: Dictionary of input parameters.
-        Returns:
-            List of the constraint values.
-        """
-        raise NotImplementedError

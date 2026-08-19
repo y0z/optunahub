@@ -80,11 +80,8 @@ Constrained Problem
 ^^^^^^^^^^^^^^^^^^^
 
 Some benchmarks also include constraints.
-These problems are implemented by inheriting :class:`~optunahub.benchmarks.ConstrainedMixin` class.
-:class:`~optunahub.benchmarks.ConstrainedMixin` provides :meth:`~optunahub.benchmarks.ConstrainedMixin.evaluate_constraints` and :meth:`~optunahub.benchmarks.ConstrainedMixin.constraints_func` methods.
-As same as objective functions, :meth:`~optunahub.benchmarks.ConstrainedMixin.constraints_func` takes an :class:`optuna.Trial` object, while :meth:`~optunahub.benchmarks.ConstrainedMixin.evaluate_constraints` takes a dictionary of input parameters.
-Those methods are used to evaluate the constraint functions.
-You can optimize these problems in the same way as usual, but you need to set the ``constraints_func`` argument in the sampler.
+These problems implement the :meth:`~optunahub.benchmarks.BaseProblem.evaluate_constraints` method, which takes a dictionary of input parameters and returns a dictionary of constraint values.
+:class:`~optunahub.benchmarks.BaseProblem` sets those values to each trial, so you can optimize these problems in the same way as usual.
 
 .. code-block:: python
 
@@ -96,10 +93,7 @@ You can optimize these problems in the same way as usual, but you need to set th
     constrained_sphere2d = bbob_constrained.Problem(function_id=1, dimension=2, instance_id=1)
 
     study = optuna.create_study(
-        sampler=optuna.samplers.TPESampler(
-            constraints_func=constrained_sphere2d.constraints_func,
-            seed=42
-        ),
+        sampler=optuna.samplers.TPESampler(seed=42),
         directions=constrained_sphere2d.directions
     )
     study.optimize(constrained_sphere2d, n_trials=100)
